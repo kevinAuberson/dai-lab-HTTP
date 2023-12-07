@@ -49,8 +49,8 @@ Create a GitHub repository for your project. You will use this repository to col
 
 ### Acceptance criteria
 
-- [ ] You have created a GitHub repository for your project.
-- [ ] The respository contains a Readme file that you will use to document your project.
+- [x] You have created a GitHub repository for your project.
+- [x] The respository contains a Readme file that you will use to document your project.
 
 
 Step 1: Static Web site
