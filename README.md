@@ -91,5 +91,5 @@ Commands used to run and stop the server :
 ```bash
 docker compose build
 docker compose start
-Docker compose stop
+docker compose stop
 ```
