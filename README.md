@@ -40,6 +40,7 @@ docker run -d -p 8080:80 nginx
 
 ## Step 2: Docker compose
 ### Docker compose file
+
 Content of the docker compose file :
 '''docker-compose.yml
 # docker-compose.yml
