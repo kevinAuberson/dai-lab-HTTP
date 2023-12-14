@@ -42,7 +42,7 @@ docker run -d -p 8080:80 nginx
 ### Docker compose file
 
 Content of the docker compose file :
-'''docker-compose.yml
+```docker-compose.yml
 # docker-compose.yml
 version: '3.8'
 services:
@@ -51,7 +51,7 @@ services:
         context: .
     ports:
       - "8080:80"  # Map port 8080 on the host to port 80 on the container
-'''
+```
 In the docker compose file we specify the version used.
 As services we use a nginx server built with the docker file created in the previous step.
 And we map the port 8080 on the host to port 80 on the container.
@@ -59,7 +59,7 @@ And we map the port 8080 on the host to port 80 on the container.
 ### nginx.conf
 
 New Content of the nginx.conf :
-'''nginx.conf
+```nginx.conf
 # nginx.conf
 
 # Configuration of our Nginx static server
@@ -80,7 +80,7 @@ http {
         index index.html;
     }
 }
-'''
+```
 In the nginx.con file we just added the lines event with the specification included in the brackets.
 Before this change when we started the container we had an error saying : "[emerg] 1#1: no "events" section in configuration"
 After some research on the web the solution is to add these lines.
