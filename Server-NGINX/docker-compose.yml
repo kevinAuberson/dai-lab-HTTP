@@ -1,0 +1,10 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  nginx:
+    image: nginx
+    volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf
+        - ./www/:/usr/share/nginx/html
+    ports:
+      - "8080:80"  # Map port 8080 on the host to port 80 on the container
