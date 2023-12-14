@@ -52,10 +52,11 @@ services:
       - "8080:80"  # Map port 8080 on the host to port 80 on the container
 '''
 In the docker compose file we specify the version used.
-As services we use a nginx server built with the docker file created in the previous step
-And we map the port 8080 on the host to port 80 on the container
+As services we use a nginx server built with the docker file created in the previous step.
+And we map the port 8080 on the host to port 80 on the container.
 
-###nginx.conf
+### nginx.conf
+
 New Content of the nginx.conf :
 '''nginx.conf
 # nginx.conf
