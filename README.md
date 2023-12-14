@@ -82,3 +82,12 @@ http {
 In the nginx.con file we just added the lines event with the specification included in the brackets.
 Before this change when we started the container we had an error saying : "[emerg] 1#1: no "events" section in configuration"
 After some research on the web the solution is to add these lines.
+
+### Run Server
+
+Commands used to run and stop the server :
+```bash
+docker compose build
+docker compose start
+Docker compose stop
+```
