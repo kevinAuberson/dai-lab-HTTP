@@ -87,8 +87,13 @@ After some research on the web the solution is to add these lines.
 
 ### Run Server
 
-Command used to run and stop the server :
+Command used to create and start container :
 ```bash
 docker compose up
+```
+Command used to build, start and stop server :
+```bash
+docker compose build
+docker compose start
 docker compose stop
 ```
