@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  nginx:
+    build:
+        context: Nginx/
+    ports:
+      - "8080:80"  # Map port 8080 on the host to port 80 on the container
+      
+  javalin:
+    build:
+        context: Javalin/
+    ports:
+      - "7777:7777"
