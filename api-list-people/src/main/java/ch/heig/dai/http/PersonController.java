@@ -15,7 +15,9 @@ public class PersonController {
         persons.add(new Person("Jack", "Doe"));
     }
     public void getPersons(Context ctx) {
+
         ctx.json(persons);
+
     }
     public void getPerson(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
@@ -25,14 +27,14 @@ public class PersonController {
             ctx.status(404).result("Person not found at index : " + id);
         }
     }
-    public void addPerson(Context ctx) {
+    public void addPerson(Context ctx) {/*
         String firstName = ctx.formParam("firstName");
-        String lastName = ctx.formParam("lastName");
+        String lastName = ctx.formParam("lastName");*/
+        Person person = ctx.bodyAsClass(Person.class);
 
-        if (firstName != null && lastName != null) {
-            Person newPerson = new Person(firstName, lastName);
-            persons.add(newPerson);
-            ctx.result("Person added successfully: " + newPerson);
+        if (person.getFirstName() != null && person.getLastName() != null) {
+            persons.add(person);
+            ctx.result("Person added successfully: " + person);
         } else {
             ctx.status(400).result("Invalid input. Both first name and last name are required.");
         }

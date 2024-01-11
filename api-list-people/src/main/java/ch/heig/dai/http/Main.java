@@ -7,10 +7,10 @@ public class Main {
         Javalin app = Javalin.create().start(7777);
         app.get("/", ctx -> ctx.result("Welcome to the Person API!"));
         PersonController personController = new PersonController();
-        app.get("/persons", personController::getPersons);
-        app.get("persons/{id}", personController::getPerson);
+        app.get("/people", personController::getPersons);
+        app.get("/person/{id}", personController::getPerson);
         app.post("/addPerson", personController::addPerson);
-        app.put("/persons/{id}", personController::updatePerson);
-        app.delete("/delete-person/{id}", personController::deletePerson);
+        app.put("/updatePerson/{id}", personController::updatePerson);
+        app.delete("/deletePerson/{id}", personController::deletePerson);
     }
 }
