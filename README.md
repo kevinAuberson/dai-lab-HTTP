@@ -99,8 +99,20 @@ docker compose stop
 ```
 
 ## Step 3: HTTP API server
-### API
+### API to manage a list of people
+The code is a concise implementation of a RESTful API using the Javalin framework in Java. It consists of three files: PersonController.java, Person.java, and Main.java. The Person class represents a person with first and last names. The PersonController class manages CRUD operations on a list of persons and handles HTTP requests. The Main class sets up the Javalin application with routes for listing, retrieving, adding, updating, and deleting persons on port 7777.
 
+#### Test of creation (POST)
+![POST](https://github.com/kevinAuberson/dai-lab-HTTP/assets/114987481/d2ed7608-41a8-4d9e-b755-c822c9e0e7fe)
+
+#### Test of read (GET)
+![GET](https://github.com/kevinAuberson/dai-lab-HTTP/assets/114987481/35697fd9-bdc7-48c0-81b8-abca9e226222)
+
+#### Test of update (PUT)
+![PUT](https://github.com/kevinAuberson/dai-lab-HTTP/assets/114987481/d7c22d94-57a1-4b5d-9959-e4db89c287f4)
+
+#### Test of delete (DELETE)
+![DELETE](https://github.com/kevinAuberson/dai-lab-HTTP/assets/114987481/ec703d6c-a1ee-49b7-88e4-036009c41053)
 
 
 ### Dockerfile for Javalin
