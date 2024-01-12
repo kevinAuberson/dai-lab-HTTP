@@ -1,7 +1,6 @@
 package ch.heig.dai.http;
 
 import io.javalin.http.Context;
-
 import java.util.LinkedList;
 
 /**

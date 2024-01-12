@@ -16,6 +16,12 @@ public class Person {
     private String lastName = "";
 
     /**
+     * Default constructor to create an empty person.
+     * Used for deserialization of JSON objects.
+     */
+    public Person() {
+    }
+    /**
      * Constructor to create a person with specified first and last names.
      *
      * @param firstName The first name of the person.
