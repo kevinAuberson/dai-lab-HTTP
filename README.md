@@ -97,3 +97,57 @@ docker compose build
 docker compose start
 docker compose stop
 ```
+
+## Step 3: HTTP API server
+### API
+
+
+
+### Dockerfile for Javalin
+Content of the Dockerfile for Javalin :
+```Dockerfile
+FROM eclipse-temurin:latest
+COPY app.jar /app.jar
+EXPOSE 7777
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+```
+In this Dockerfile for Javalin we use an image of eclipse-temurin for JRE, we COPY our app.jar which contains our API server into the destination
+The command EXPOSE 7777 will permit our application to listen on this port and ENTRYPOINT Specify the default executable.
+
+### Docker Compose file
+We changed the directory tree for the docker part so the Docker compose changed a little bit
+Content of the Docker compose file :
+```docker-compose.yml
+# docker-compose.yml
+version: '3.8'
+services:
+  nginx:
+    build:
+        context: Nginx/
+    ports:
+      - "8080:80"  # Map port 8080 on the host to port 80 on the container
+      
+  javalin:
+    build:
+        context: Javalin/
+    ports:
+      - "7777:7777"
+```
+The part for Javalin is added, we build the container with the dockerfile provided in the context part and we map it to the port 7777
+For nginx we moved the dockerfile in a subfolder so we separated the static server and API parts.
+
+### Run Servers
+Command used to create and start container :
+```bash
+docker compose up
+```
+Command used to build, start and stop server :
+```bash
+docker compose build
+docker compose start
+docker compose stop
+```
+Command used to delete container :
+```bash
+docker compose down
+```
