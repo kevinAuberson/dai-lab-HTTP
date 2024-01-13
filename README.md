@@ -284,5 +284,8 @@ This command stop all the services running.
 docker compose down
 ```
 
+Example of how it works :
+<img width="811" alt="Capture d’écran 2024-01-13 à 15 51 13" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/395a11d3-7357-4f48-a7a2-6fcaad482431">
+
 ### Javalin application
 In our application we added some log information to understand which service is responding to our command.
