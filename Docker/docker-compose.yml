@@ -1,14 +1,30 @@
 # docker-compose.yml
 version: '3.8'
 services:
+
   nginx:
     build:
-        context: Nginx/
-    ports:
-      - "8080:80"  # Map port 8080 on the host to port 80 on the container
+      context: Nginx/
+    deploy:
+      replicas: 1
+    labels:
+      - traefik.http.routers.nginx.rule=Host(`nginx.localhost`)
       
   javalin:
     build:
-        context: Javalin/
+      context: Javalin/
+    deploy:
+      replicas: 1
+    labels:
+      - traefik.http.routers.javalin.rule=Host(`javalin.localhost`)
+
+  traefik:
+    image: traefik:latest
+    command:
+      - --api.insecure=true  # Enable Traefik dashboard
+      - --providers.docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "7777:7777"
+      - "80:80" # Web sites nginx and javalin
+      - "8080:8080" # Traefik dashboard
