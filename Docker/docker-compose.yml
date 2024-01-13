@@ -20,6 +20,8 @@ services:
     labels:
       - traefik.http.routers.javalin.rule=Host(`javalin.localhost`)  # Traefik routing rule for Javalin
       - traefik.http.services.javalin.loadbalancer.server.port=80  # Specify the port for load balancing
+      - traefik.http.services.javalin.loadbalancer.sticky=true # activate sticky session
+      - traefik.http.services.javalin.loadbalancer.sticky.cookie.name=StickyCookie # name of the cookies
 
   # Traefik service configuration
   traefik:
