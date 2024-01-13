@@ -220,6 +220,18 @@ We added the line EXPOSE 80 to make this service listen on the port 80 for traef
 ```
 Our Javalin application now listen on the port 80 instead of the port 7777.
 
+### Reverse proxy
+
+Reverse proxy can handle traffic from all user to access the web sites and can act as a load balancer, security gateway, web cache, etc...
+It's also a good element of protection for infrastructures because only the proxy is exposed to the internet and hides the internal web servers.
+The HTTPS will be implemented in the step 7.
+
+### Traefik
+
+We can access to the Traefik dashboard by using the port 8080 on a web browser.
+
+<img width="1555" alt="Capture d’écran 2024-01-13 à 15 59 32" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/ef6cf7fa-ea96-40dc-98e1-642d25c021c7">
+
 ## Step 5: Scalability and load balancing
 ### Docker Compose file
 Content of the Docker compose file :
@@ -287,6 +299,10 @@ docker compose down
 Example of how it works :
 
 <img width="811" alt="Capture d’écran 2024-01-13 à 15 51 13" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/395a11d3-7357-4f48-a7a2-6fcaad482431">
+
+#### Test load balancer with scalability
+
+<img width="1460" alt="Capture d’écran 2024-01-13 à 16 13 12" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/a02e39a2-4ea3-4319-92ad-52d62af4df5b">
 
 ### Javalin application
 In our application we added some log information to understand which service is responding to our command.
