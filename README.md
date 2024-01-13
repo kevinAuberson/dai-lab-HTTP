@@ -168,7 +168,41 @@ docker compose down
 ### Docker Compose file
 Content of the Docker composefile :
 ```docker-compose.yml
+version: '3.8'
+services:
+
+  # Nginx service configuration
+  nginx:
+    build:
+      context: Nginx/  # Set the build context to the Nginx directory
+    deploy:
+      replicas: 1  # Deploy 1 replica
+    labels:
+      - traefik.http.routers.nginx.rule=Host(`nginx.localhost`)  # Traefik routing rule for Nginx
+
+  # Javalin service configuration
+  javalin:
+    build:
+      context: Javalin/  # Set the build context to the Javalin directory
+    deploy:
+      replicas: 1  # Deploy 1 replica
+    labels:
+      - traefik.http.routers.javalin.rule=Host(`javalin.localhost`)  # Traefik routing rule for Javalin
+
+  # Traefik service configuration
+  traefik:
+    image: traefik:latest  # Use the latest Traefik image
+    command:
+      - --api.insecure=true  # Enable Traefik dashboard (insecure mode)
+      - --providers.docker  # Use Docker as the provider
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket for communication
+    ports:
+      - "80:80"  # Expose port 80 for web sites (nginx and javalin)
+      - "8080:8080"  # Expose port 8080 for Traefik dashboard
+
 ```
+The command to start and stop the container are the same in the other step.
 
 ### Dockerfile file for nginx
 Content of the Docker file :
