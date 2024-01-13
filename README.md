@@ -97,3 +97,69 @@ docker compose build
 docker compose start
 docker compose stop
 ```
+
+## Step 3: HTTP API server
+### API to manage a list of people
+The code is a concise implementation of a RESTful API using the Javalin framework in Java. It consists of three files: PersonController.java, Person.java, and Main.java. The Person class represents a person with first and last names. The PersonController class manages CRUD operations on a list of persons and handles HTTP requests. The Main class sets up the Javalin application with routes for listing, retrieving, adding, updating, and deleting persons on port 7777.
+
+#### Test of creation (POST)
+![POST](https://github.com/kevinAuberson/dai-lab-HTTP/assets/114987481/d2ed7608-41a8-4d9e-b755-c822c9e0e7fe)
+
+#### Test of read (GET)
+![GET](https://github.com/kevinAuberson/dai-lab-HTTP/assets/114987481/35697fd9-bdc7-48c0-81b8-abca9e226222)
+
+#### Test of update (PUT)
+![PUT](https://github.com/kevinAuberson/dai-lab-HTTP/assets/114987481/d7c22d94-57a1-4b5d-9959-e4db89c287f4)
+
+#### Test of delete (DELETE)
+![DELETE](https://github.com/kevinAuberson/dai-lab-HTTP/assets/114987481/ec703d6c-a1ee-49b7-88e4-036009c41053)
+
+
+### Dockerfile for Javalin
+Content of the Dockerfile for Javalin :
+```Dockerfile
+FROM eclipse-temurin:latest
+COPY app.jar /app.jar
+EXPOSE 7777
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+```
+In this Dockerfile for Javalin we use an image of eclipse-temurin for JRE, we COPY our app.jar which contains our API server into the destination.
+The command EXPOSE 7777 will permit our application to listen on this port and ENTRYPOINT Specify the default executable.
+
+### Docker Compose file
+We changed the directory tree for the docker part so the Docker compose changed a little bit.
+Content of the Docker compose file :
+```docker-compose.yml
+# docker-compose.yml
+version: '3.8'
+services:
+  nginx:
+    build:
+        context: Nginx/
+    ports:
+      - "8080:80"  # Map port 8080 on the host to port 80 on the container
+      
+  javalin:
+    build:
+        context: Javalin/
+    ports:
+      - "7777:7777"
+```
+The part for Javalin is added, we build the container with the dockerfile provided in the context part and we map it to the port 7777.
+For nginx we moved the dockerfile in a subfolder so we separated the static server and API parts.
+
+### Run Servers
+Command used to create and start container :
+```bash
+docker compose up
+```
+Command used to build, start and stop server :
+```bash
+docker compose build
+docker compose start
+docker compose stop
+```
+Command used to delete container :
+```bash
+docker compose down
+```
