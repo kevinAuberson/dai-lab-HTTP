@@ -259,9 +259,9 @@ services:
       - "80:80"  # Expose port 80 for web sites (nginx and javalin)
       - "8080:8080"  # Expose port 8080 for Traefik dashboard
 ```
-The number of replicas has been chaged to 2 to launch the docker compose file in a load blancing environment
+The number of replicas has been chaged to 2 to launch the docker compose file in a load blancing environment.
 
-### Run servers with scalability
+### Run servers with scalability
 We can start several instance of the services by simply using this command :
 ```bash
 docker compose up
