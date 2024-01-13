@@ -290,3 +290,63 @@ Example of how it works :
 
 ### Javalin application
 In our application we added some log information to understand which service is responding to our command.
+
+## Step 6: Reverse proxy with Traefik
+### Docker compose file
+
+Content of the docker compose file :
+```docker-compose.yml
+version: '3.8'
+services:
+
+  # Nginx service configuration
+  nginx:
+    build:
+      context: Nginx/  # Set the build context to the Nginx directory
+    deploy:
+      replicas: 2  # Deploy 2 replica
+    labels:
+      - traefik.http.routers.nginx.rule=Host(`nginx.localhost`)  # Traefik routing rule for Nginx
+      - traefik.http.services.nginx.loadbalancer.server.port=80  # Specify the port for load balancing
+
+  # Javalin service configuration
+  javalin:
+    build:
+      context: Javalin/  # Set the build context to the Javalin directory
+    deploy:
+      replicas: 2  # Deploy 2 replica
+    labels:
+      - traefik.http.routers.javalin.rule=Host(`javalin.localhost`)  # Traefik routing rule for Javalin
+      - traefik.http.services.javalin.loadbalancer.server.port=80  # Specify the port for load balancing
+      - traefik.http.services.javalin.loadbalancer.sticky=true # activate sticky session
+      - traefik.http.services.javalin.loadbalancer.sticky.cookie.name=StickyCookie # name of the cookies
+
+  # Traefik service configuration
+  traefik:
+    image: traefik:latest  # Use the latest Traefik image
+    command:
+      - --api.insecure=true  # Enable Traefik dashboard (insecure mode)
+      - --providers.docker  # Use Docker as the provider
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket for communication
+    ports:
+      - "80:80"  # Expose port 80 for web sites (nginx and javalin)
+      - "8080:8080"  # Expose port 8080 for Traefik dashboard
+```
+In this file we added two lines under the javalin service configuration which activate the sticky seession.
+
+### Sticky session
+Demonstration of connections with Sticky session :
+
+<img width="744" alt="Capture d’écran 2024-01-13 à 16 38 44" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/249e3aa4-8fdc-4cc3-a92c-793a2bc5aaf6">
+
+#### Header Cookie
+Content of the header :
+
+<img width="1050" alt="Capture d’écran 2024-01-13 à 16 41 34" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/ab20bb09-a7f3-4053-9d08-5d814e97f3d9">
+
+### Round Robin
+Demonstration of connections with round robin :
+
+<img width="1478" alt="Capture d’écran 2024-01-13 à 16 37 57" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/4bc85986-f127-4364-be12-72c8cf2ea201">
+
