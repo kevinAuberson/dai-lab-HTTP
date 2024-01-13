@@ -163,3 +163,26 @@ Command used to delete container :
 ```bash
 docker compose down
 ```
+
+## Step 4: Reverse proxy with Traefik
+### Docker Compose file
+Content of the Docker composefile :
+```docker-compose.yml
+```
+
+### Dockerfile file for nginx
+Content of the Docker file :
+```Dockerfile
+FROM nginx:latest
+ COPY ./nginx.conf /etc/nginx/nginx.conf
+ COPY ./www/ /usr/share/nginx/html
+EXPOSE 80
+```
+We added the line EXPOSE 80 to make this service listen on the port 80 for traefik
+
+### Javalin application
+```java
+// Create and start Javalin application on port 80
+        Javalin app = Javalin.create().start(80);
+```
+Our Javalin application now listen on the port 80 instead of the port 7777.
