@@ -134,12 +134,12 @@ The steps to follow for this section are thus:
 
 ### Acceptance criteria
 
-- [ ] You can do a demo where you start from an "empty" Docker environment (no container running) and using docker compose you can start your infrastructure with 3 containers: static server, dynamic server and reverse proxy
-- [ ] In the demo you can access each server from the browser in the demo. You can prove that the routing is done correctly through the reverse proxy.
-- [ ] You are able to explain in the documentation how you have implemented the solution and walk us through the configuration and the code.
-- [ ] You are able to explain in the documentation why a reverse proxy is useful to improve the security of the infrastructure.
-- [ ] You are able to explain in the documentation how to access the dashboard of Traefik and how it works.
-- [ ] You have **documented** your configuration in your report.
+- [x] You can do a demo where you start from an "empty" Docker environment (no container running) and using docker compose you can start your infrastructure with 3 containers: static server, dynamic server and reverse proxy
+- [x] In the demo you can access each server from the browser in the demo. You can prove that the routing is done correctly through the reverse proxy.
+- [x] You are able to explain in the documentation how you have implemented the solution and walk us through the configuration and the code.
+- [x] You are able to explain in the documentation why a reverse proxy is useful to improve the security of the infrastructure.
+- [x] You are able to explain in the documentation how to access the dashboard of Traefik and how it works.
+- [x] You have **documented** your configuration in your report.
 
 
 Step 5: Scalability and load balancing
