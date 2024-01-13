@@ -1,3 +1,4 @@
-FROM nginx:1.10.1-alpine
+FROM nginx:latest
  COPY ./nginx.conf /etc/nginx/nginx.conf
  COPY ./www/ /usr/share/nginx/html
+EXPOSE 80

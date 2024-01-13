@@ -21,8 +21,8 @@ public class Main {
      * @param args Command line arguments (unused in this application).
      */
     public static void main(String[] args) {
-        // Create and start Javalin application on port 7777
-        Javalin app = Javalin.create().start(7777);
+        // Create and start Javalin application on port 80
+        Javalin app = Javalin.create().start(80);
 
         // Root path ("/") with a welcome message
         app.get("/", ctx -> ctx.result("Welcome to the Persons API!"));
@@ -30,10 +30,10 @@ public class Main {
         PersonController personController = new PersonController();
 
         // Define routes for handling various CRUD operations on persons
-        app.get("/people", personController::getPersons);
-        app.get("/person/{id}", personController::getPerson);
-        app.post("/addPerson", personController::addPerson);
-        app.put("/updatePerson/{id}", personController::updatePerson);
-        app.delete("/deletePerson/{id}", personController::deletePerson);
+        app.get("/api/people", personController::getPersons);
+        app.get("/api/person/{id}", personController::getPerson);
+        app.post("/api/addPerson", personController::addPerson);
+        app.put("/api/updatePerson/{id}", personController::updatePerson);
+        app.delete("/api/deletePerson/{id}", personController::deletePerson);
     }
 }
