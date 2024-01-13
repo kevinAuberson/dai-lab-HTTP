@@ -2,6 +2,7 @@ package ch.heig.dai.http;
 
 import io.javalin.http.Context;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 /**
  * @author Kevin Auberson, Adrian Rogner
@@ -21,6 +22,7 @@ public class PersonController {
      * List of persons managed by the controller.
      */
     public LinkedList<Person> persons;
+    private static final Logger LOG = Logger.getLogger(PersonController.class.getName());
 
     /**
      * Constructor to initialize the list of persons with sample data.
@@ -39,6 +41,7 @@ public class PersonController {
      */
     public void getPersons(Context ctx) {
         ctx.json(persons);
+        LOG.info("GET " + persons);
     }
 
     /**
@@ -50,6 +53,7 @@ public class PersonController {
         int id = Integer.parseInt(ctx.pathParam("id"));
         if (id >= 0 && id < persons.size()) {
             ctx.json(persons.get(id));
+            LOG.info("GET " + persons.get(id).toString());
         } else {
             ctx.status(404).result("Person not found at index : " + id);
         }
@@ -65,6 +69,7 @@ public class PersonController {
         if (person.getFirstName() != null && person.getLastName() != null) {
             persons.add(person);
             ctx.result("Person added successfully: " + person);
+            LOG.info("POST " + person);
         } else {
             ctx.status(400).result("Invalid input. Both first name and last name are required.");
         }
@@ -81,6 +86,7 @@ public class PersonController {
         if (id >= 0 && id < persons.size()) {
             persons.set(id, person);
             ctx.result("Person updated : " + person);
+            LOG.info("PUT " + person);
         } else {
             ctx.status(404).result("Person not found at index : " + id);
         }
@@ -94,6 +100,7 @@ public class PersonController {
     public void deletePerson(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
         if (id >= 0 && id < persons.size()) {
+            LOG.info("DELETE  " + persons.get(id).toString());
             ctx.result("Person deleted : " + persons.remove(id));
         } else {
             ctx.status(404).result("Person not found at index : " + id);
