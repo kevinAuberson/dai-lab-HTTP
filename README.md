@@ -166,7 +166,7 @@ docker compose down
 
 ## Step 4: Reverse proxy with Traefik
 ### Docker Compose file
-Content of the Docker composefile :
+Content of the Docker compose file :
 ```docker-compose.yml
 version: '3.8'
 services:
@@ -200,7 +200,6 @@ services:
     ports:
       - "80:80"  # Expose port 80 for web sites (nginx and javalin)
       - "8080:8080"  # Expose port 8080 for Traefik dashboard
-
 ```
 The command to start and stop the container are the same in the other step.
 
@@ -220,3 +219,70 @@ We added the line EXPOSE 80 to make this service listen on the port 80 for traef
         Javalin app = Javalin.create().start(80);
 ```
 Our Javalin application now listen on the port 80 instead of the port 7777.
+
+## Step 5: Scalability and load balancing
+### Docker Compose file
+Content of the Docker compose file :
+```docker-compose.yml
+version: '3.8'
+services:
+
+  # Nginx service configuration
+  nginx:
+    build:
+      context: Nginx/  # Set the build context to the Nginx directory
+    deploy:
+      replicas: 2  # Deploy 2 replica
+    labels:
+      - traefik.http.routers.nginx.rule=Host(`nginx.localhost`)  # Traefik routing rule for Nginx
+      - traefik.http.services.nginx.loadbalancer.server.port=80  # Specify the port for load balancing
+
+  # Javalin service configuration
+  javalin:
+    build:
+      context: Javalin/  # Set the build context to the Javalin directory
+    deploy:
+      replicas: 2  # Deploy 2 replica
+    labels:
+      - traefik.http.routers.javalin.rule=Host(`javalin.localhost`)  # Traefik routing rule for Javalin
+      - traefik.http.services.javalin.loadbalancer.server.port=80  # Specify the port for load balancing
+
+  # Traefik service configuration
+  traefik:
+    image: traefik:latest  # Use the latest Traefik image
+    command:
+      - --api.insecure=true  # Enable Traefik dashboard (insecure mode)
+      - --providers.docker  # Use Docker as the provider
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket for communication
+    ports:
+      - "80:80"  # Expose port 80 for web sites (nginx and javalin)
+      - "8080:8080"  # Expose port 8080 for Traefik dashboard
+```
+The number of replicas has been chaged to 2 to launch the docker compose file in a load blancing environment.
+
+### Run servers with scalability
+We can start several instance of the services by simply using this command :
+```bash
+docker compose up
+```
+
+Once the services are started we can use this command to extend the number of servers of each services.
+The number specify the total servers which will be running.
+We have to specify the command by using the argument --no-recreate because we don't want to recreate the container.
+```bash
+docker compose up -d --scale nginx=3 --scale javalin=3 --no-recreate
+```
+
+To deacrese the number of servers use the same command by specifying an inferior number of servers
+```bash
+docker compose up -d --scale nginx=2 --scale javalin=2 --no-recreate
+```
+
+This command stop all the services running.
+```bash
+docker compose down
+```
+
+### Javalin application
+In our application we added some log information to understand which service is responding to our command.
