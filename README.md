@@ -361,8 +361,110 @@ Content of the header :
 
 <img width="1050" alt="Capture d’écran 2024-01-13 à 16 41 34" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/ab20bb09-a7f3-4053-9d08-5d814e97f3d9">
 
-### Round Robin
+### Round Robin
 Demonstration of connections with round robin :
 
 <img width="1478" alt="Capture d’écran 2024-01-13 à 16 37 57" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/4bc85986-f127-4364-be12-72c8cf2ea201">
 
+## Step 7: Securing Traefik with HTTPS
+### Certificate
+To generate a self-signed certificate we used this command :
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=localhost"
+```
+
+These files have been mounted in the Traefik container by using this command :
+```docker-compose.yml
+volumes:
+  - ./certificates:/etc/traefik/certificates
+```
+
+### Traefik configuration file
+To specify the location of the certificates with Traefik we have to use a configuration file.
+Content of the Trafik configuration file :
+```traefik.yml
+# Enabling the docker provider
+providers:
+  docker: {}
+
+# Static configuration
+entryPoints:
+  web:
+    address: ":80"
+
+  websecure:
+    address: ":443"
+
+# Dynamic configuration
+tls:
+  certificates:
+    - certFile: /etc/traefik/certificates/cert.pem
+      keyFile: /etc/traefik/certificates/key.pem
+
+# Access to the dashboard
+api:
+  dashboard: true
+  insecure: true
+```
+
+In the docker compose file we have to mount the configuration file.
+Content added in the docker compose file :
+```docker-compose.yml
+volumes:
+  - ./Traefik/traefik.yaml:/etc/traefik/traefik.yaml
+```
+
+### Activating the HTTPS entrypoints for the servers
+We activated the HTTPS entrypoint and set TLS to true for our servers.
+Content of docker compose file :
+```docker-compose.yml
+version: '3.8'
+services:
+
+  # Nginx service configuration
+  nginx:
+    build:
+      context: Nginx/  # Set the build context to the Nginx directory
+    deploy:
+      replicas: 2  # Deploy 2 replica
+    labels:
+      - traefik.http.routers.nginx.rule=Host(`nginx.localhost`)  # Traefik routing rule for Nginx
+      - traefik.http.routers.nginx.entrypoints=web,websecure  # Entrypoints
+      - traefik.http.routers.nginx.tls=true  # TLS activated
+
+  # Javalin service configuration
+  javalin:
+    build:
+      context: Javalin/  # Set the build context to the Javalin directory
+    deploy:
+      replicas: 2  # Deploy 2 replica
+    labels:
+      - traefik.http.routers.javalin.rule=Host(`javalin.localhost`)  # Traefik routing rule for Javalin
+      - traefik.http.services.javalin.loadbalancer.sticky=true  # activate sticky session
+      - traefik.http.services.javalin.loadbalancer.sticky.cookie.name=StickyCookie  # name of the cookies
+      - traefik.http.routers.javalin.entrypoints=web,websecure  # Entrypoints
+      - traefik.http.routers.javalin.tls=true  # TLS activated
+
+  # Traefik service configuration
+  traefik:
+    image: traefik:latest  # Use the latest Traefik image
+    command:
+      - --api.insecure=true  # Enable Traefik dashboard (insecure mode)
+      - --providers.docker  # Use Docker as the provider
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket for communication
+      - ./certificates:/etc/traefik/certificates  # Mount Certificate and key to traefik certificate path
+      - ./Traefik/traefik.yaml:/etc/traefik/traefik.yaml  # Mount traefik file configuration
+    ports:
+      - "443:80"  # Expose port 80 for web sites (nginx and javalin)
+      - "8080:8080"  # Expose port 8080 for Traefik dashboard
+```
+
+### Testing
+When trying to connect to the web page in https we can see this message saying this website is unsecure because of a slef signed certificate.
+
+<img width="1150" alt="Capture d’écran 2024-01-14 à 15 07 39" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/2a695cad-2909-4b91-bfc8-e016dee8dd71">
+
+On this image we can see the TLS is activated for our two servers using the entrypoints configurated.
+
+<img width="1421" alt="Capture d’écran 2024-01-14 à 15 09 41" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/5e68170d-28a8-4737-9d66-e6eeab154c40">
