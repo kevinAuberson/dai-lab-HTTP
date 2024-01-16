@@ -255,9 +255,9 @@ The goal of this step is to deploy or develop a Web app that can be used to moni
 
 ### Acceptance criteria
 
-- [ ] You can do a demo to show the Management UI and manage the containers of your infrastructure.
-- [ ] You have **documented** how to use your solution.
-- [ ] You have **documented** your configuration in your report.
+- [x] You can do a demo to show the Management UI and manage the containers of your infrastructure.
+- [x] You have **documented** how to use your solution.
+- [x] You have **documented** your configuration in your report.
 
 
 Optional step 2: Integration API - static Web site
