@@ -468,3 +468,57 @@ When trying to connect to the web page in https we can see this message saying t
 On this image we can see the TLS is activated for our two servers using the entrypoints configurated.
 
 <img width="1421" alt="Capture d’écran 2024-01-14 à 15 09 41" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/5e68170d-28a8-4737-9d66-e6eeab154c40">
+
+## Step optional 1: Managing UI
+We choose to use Portainer because it's easy to use to interact with ours containers and to monitor them and it's a stable application.
+
+### Configuration docker compose
+Add these lines to the Docker compose file:
+```docker-compose.yml
+  # Portainer service configuration
+  portainer:
+    image: portainer/portainer-ce:latest  # Use latest version of portainer
+    ports:
+      - "9443:9443"  # Expose port 9443 for portainer GUI management
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Bind Docker socket for communication
+    restart: unless-stopped  # Restart automatically portainer
+```
+
+### Portainer
+#### Configuration
+
+On the browser go on https://localhost:9443/ and create an user account as done below.
+
+![image](https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/7eddbaac-054d-4b31-b15d-3d0ef843d75f)
+
+#### Usage
+
+First select your environment.
+
+<img width="1669" alt="Capture d’écran 2024-01-16 à 11 48 16" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/7eefae27-95ba-45e9-9b21-a8dbb32d7ef4">
+
+Click on containers.
+
+<img width="1673" alt="Capture d’écran 2024-01-16 à 11 48 26" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/744d905c-0cda-41ac-80b2-809bf4f2b2c3">
+
+Here you can see all your containers, as you can see you can manage the container by selecting them and clicking on the different options (start, stop, etc...).
+Click on the container you want to duplicate.
+
+<img width="1364" alt="Capture d’écran 2024-01-16 à 11 48 56" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/32307aa6-fa43-4b88-a942-75edd3282246">
+
+CLick on Duplicate/Edit.
+
+<img width="863" alt="Capture d’écran 2024-01-16 à 11 49 18" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/bddbce26-6c2c-40e9-9c25-1abc959a8e21">
+
+You can rename your new duplicated container and put off the option "always pull image". You can also add more configuration as you wish.
+
+<img width="1345" alt="Capture d’écran 2024-01-16 à 11 49 43" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/d1c05c62-ee86-4967-a002-164d3b459aca">
+
+Here you can see the new duplicated container is added in the cluster.
+
+<img width="1367" alt="Capture d’écran 2024-01-16 à 11 49 58" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/c047a860-2f58-46c6-b4a4-1d57b3f07523">
+
+As a validation the users can communicate with this container.
+
+<img width="1273" alt="Capture d’écran 2024-01-16 à 12 00 07" src="https://github.com/kevinAuberson/dai-lab-HTTP/assets/100291212/23313482-9278-4236-b17c-450472e586d3">
