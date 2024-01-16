@@ -235,8 +235,8 @@ If it does not work, go to the Traefik dashboard and check the configuration of 
 
 ### Acceptance criteria
 
-- [ ] You can do a demo where you show that the static and dynamic servers are accessible through HTTPS.
-- [ ] You have **documented** your configuration in your report.
+- [x] You can do a demo where you show that the static and dynamic servers are accessible through HTTPS.
+- [x] You have **documented** your configuration in your report.
 
 
 

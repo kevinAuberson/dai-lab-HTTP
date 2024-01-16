@@ -1,0 +1,22 @@
+# Enabling the docker provider
+providers:
+  docker: {}
+
+# Static configuration
+entryPoints:
+  web:
+    address: ":80"
+
+  websecure:
+    address: ":443"
+
+# Dynamic configuration
+tls:
+  certificates:
+    - certFile: /etc/traefik/certificates/cert.pem
+      keyFile: /etc/traefik/certificates/key.pem
+
+# Access to the dashboard
+api:
+  dashboard: true
+  insecure: true
